@@ -1,21 +1,19 @@
-FROM oven/bun:1 AS deps
+FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --production && \
-    cp -R node_modules prod_node_modules && \
-    bun install --frozen-lockfile
+COPY package.json ./
+RUN npm install
 
-FROM oven/bun:1 AS builder
+FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN bun run build
+RUN ./node_modules/.bin/next build
 
-FROM oven/bun:1 AS runner
+FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -34,4 +32,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "run", "server.js"]
+CMD ["node", "server.js"]
