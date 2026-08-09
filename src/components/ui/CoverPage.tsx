@@ -124,7 +124,14 @@ export function CoverPage({ books }: Props) {
         </motion.div>
 
         <div className="absolute bottom-6 left-6 sm:left-8 text-[0.6rem] text-text-secondary uppercase tracking-[0.15em] z-10">
-          <span>A curated collection of technical volumes</span>
+          <a
+            href="https://h4x0r.icu/library/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-text-primary transition-colors"
+          >
+            An alternative front-end for h4x0r.icu/library
+          </a>
         </div>
       </section>
 
